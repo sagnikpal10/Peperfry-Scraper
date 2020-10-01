@@ -41,6 +41,27 @@ class pepperfrySpider(scrapy.Spider):
 
 
     #### Add code here
+	def parse(self, response,**meta):
+    	#response.selector.xpath('').extract()
+        product_urls = response.xpath('//div/div/div/a[@p=0]/@href').extract()
+        #print(product_urls)
+        #print(len(product_urls))
+        counter = 0
+
+        #print(response.meta)
+        for url in product_urls:
+        	resp =  scrapy.Request(url=url,callback=self.parse_item,dont_filter=True)
+        	resp.meta['dir_name'] = response.meta['dir_name']
+        	#print(resp)
+
+        	if counter == self.MAX_CNT:
+        		break
+
+        	if not resp == None:
+        		counter +=1
+        		#print(resp)
+
+        	yield resp
        
     def parse_item(self,response,**meta):
 
