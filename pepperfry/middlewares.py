@@ -53,6 +53,8 @@ class PepperfrySpiderMiddleware(object):
             yield r
 
     #### Add code here
+    def spider_opened(self, spider):
+        spider.logger.info('Spider opened: %s' % spider.name)
 
 
 class PepperfryDownloaderMiddleware(object):
